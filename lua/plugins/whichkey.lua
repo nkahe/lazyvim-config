@@ -1,22 +1,6 @@
 
 -- if true then return {} end
 
--- return {
---   "folke/which-key.nvim",
---   opts = {
---     spec = {
---       {
---         { "<Leader>N", group = "Notes (Obsidian)" },
---         { "<Leader>t", group = "Terminal" },
---         { "gr", group = "LSP" },
---         { "ö", group = "Local leader" },
---        -- 👇 new entry: override <Leader>? to show global WhichKey
---         { "<Leader>?", "<cmd>WhichKey<cr>", desc = "WhichKey (global)" },
---       }
---     }
---   }
--- }
-
 return {
   "folke/which-key.nvim",
   opts = function(_, opts)
@@ -32,7 +16,14 @@ return {
         -- eAltGr mappings
         { "ð", '"_d', desc = "Delete without yanking" },
         { "Ð", '"_D', desc = "Delete line without yanking" },
-        -- { "š", function() require("flash").jump() end, desc = "Flash Search" },
+
+        -- Restore default Neovim keys
+        { "s", 's', desc = "Substitute character" },
+        { "S", 'S', desc = "Substitute line" },
+
+        -- Mapped to s/S by default in LazyVim.
+        { "ö", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+        { "Ö", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       },
     })
 

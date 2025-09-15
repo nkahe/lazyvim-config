@@ -85,6 +85,12 @@ vim.schedule(function()
   if vim.fn.maparg("L", "n") ~= "" then
     vim.keymap.del("n", "L")
   end
+  if vim.fn.maparg("s", "n") ~= "" then
+    vim.keymap.del("n", "s")
+  end
+  if vim.fn.maparg("S", "n") ~= "" then
+    vim.keymap.del("n", "S")
+  end
 end)
 
 --------------------------------------------------------------------------------
@@ -148,8 +154,6 @@ map('t', [[<C-\><C-\>]], [[<C-\><C-n>]], { silent = true })
 vim.keymap.set("n", "<leader>tv", function()
   vim.cmd("vsplit | terminal")
 end, { desc = "◨ Open in vertical split" })
-
-
 
 -- WhichKey descriptions --------------------------------------
 
