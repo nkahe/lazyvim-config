@@ -8,8 +8,7 @@ local g = vim.g
 -- No format on save.
 g.autoformat = false
 
--- Included in nordic and german keyboard layouts.
-g.maplocalleader = 'ö'
+-- g.maplocalleader = '\'
 
 -- Use Linux primary, selection clipboard by default. Problem with LazyVim's
 -- default "unnamedplus", is that it pollutes the main clipboard history with
