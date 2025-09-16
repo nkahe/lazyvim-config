@@ -22,8 +22,10 @@ return {
         { "S", 'S', desc = "Substitute line" },
 
         -- Mapped to s/S by default in LazyVim.
-        { "ö", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-        { "Ö", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        { "ö", mode = { "n", "x", "o" }, function() require("flash").jump() end,
+          desc = "Flash" },
+        { "Ö", mode = { "n", "o", "x" }, function() require("flash").treesitter() end,
+          desc = "Flash Treesitter" },
       },
     })
 

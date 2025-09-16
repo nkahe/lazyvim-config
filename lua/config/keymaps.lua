@@ -18,8 +18,6 @@ require("config.user-commands")
 
 -- Deleting without yanking
 
-map({'n', 'v'}, "<A-d>", '"_d', { desc = "Delete without yanking" })
-map({'n', 'v'}, "<A-D>", '"_D', { desc = "Delete to end of line without yanking" })
 -- AltGr + d in nordic layout
 map({'n', 'v'}, "ð", '"_d', { desc = "Delete without yanking" })
 map({'n', 'v'}, "Ð", '"_d', { desc = "AltGr-D Delete to end of line without yanking" })
