@@ -32,3 +32,5 @@ return {
     hijack_netrw_behavior = "open_default", -- Relevant for symlink resolution
   }
 }
+
+

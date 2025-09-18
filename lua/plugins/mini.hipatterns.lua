@@ -2,7 +2,7 @@ if true then return {} end
 
 local hipatterns = require('mini.hipatterns')
 return {
-  "echasnovski/mini.hipatterns",
+  "nvim-mini/mini.hipatterns",
   opts = {
     highlighters = {
     -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
