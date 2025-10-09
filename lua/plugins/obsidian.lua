@@ -1,8 +1,12 @@
+
+-- if true then return {} end
+
 -- epwalsh/obsidian.nvim: Obsidian 🤝 Neovim https://github.com/epwalsh/obsidian.nvim
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
+  -- "epwalsh/obsidian.nvim",
   version = "*",  -- recommended, use latest release instead of latest commit
-  lazy = true,
+  -- lazy = true,
   ft = "markdown",
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   -- event = {
@@ -18,12 +22,12 @@ return {
   opts = {
     workspaces = {
       {
-        name = "personal",
-        path = "~/Documents/private_notes",
+        name = "notes",
+        path = "~/Nextcloud/notes",
       },
       {
-        name = "nextcloud",
-        path = "~/Nextcloud/notes",
+        name = "local",
+        path = "~/Documents/local_notes",
       },
     },
     "use_alias_only",
