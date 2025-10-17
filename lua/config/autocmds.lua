@@ -138,7 +138,6 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   end,
 })
 
-
 -- Open location list after search
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   pattern = "lgrep",

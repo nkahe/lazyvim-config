@@ -9,7 +9,6 @@ return {
       {
         { "<Leader>N", group = "Notes (Obsidian)" },
         { "<Leader>t", group = "Terminal" },
-        { "gr", group = "LSP" },
         -- 👇 global WhichKey
         { "<Leader>?", "<cmd>WhichKey<cr>", desc = "WhichKey (global)" },
 
