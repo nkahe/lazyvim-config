@@ -5,7 +5,8 @@
 
 ## About
 
-This is my maximalistic [Neovim](https://neovim.io/) configuration. It uses [LazyVim](https://www.lazyvim.org/) setup.
+This is my maximalistic [Neovim](https://neovim.io/) configuration. It uses [LazyVim](https://www.lazyvim.org/) setup. This is meant to be used as local developer
+environment.
 
 ## Differences to default LazyVim
 
