@@ -44,6 +44,15 @@ return {
         explorer = {
           diagnostics = false
         },
+      },
+      win = {
+        preview = {
+          wo = {
+            wrap = true,
+            linebreak = true,
+            list = false
+          }
+        }
       }
     }
   },
