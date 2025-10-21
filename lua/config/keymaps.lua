@@ -10,7 +10,13 @@ if vim.g.vscode then
   require("config.vscode")
 end
 
-require("config.user-commands")
+-- Restore some default mappings ------------------------------
+
+-- Setups like LazyVim binds these by default.
+pcall(vim.keymap.del, "n", "H")
+pcall(vim.keymap.del, "n", "L")
+pcall(vim.keymap.del, "n", "s")
+pcall(vim.keymap.del, "n", "S")
 
 -- NOTE: For mappings "{ noremap = true }" is the default so no need to add that.
 
@@ -72,25 +78,6 @@ vim.keymap.set({'n', 'v'}, '<down>',  '<nop>')
 vim.keymap.set({'n', 'v'}, '<left>',  '<nop>')
 vim.keymap.set({'n', 'v'}, '<right>', '<nop>')
 
-
--- Restore some default mappings ------------------------------
-
-vim.schedule(function()
-  -- Check if the mappings exist before deleting them
-  if vim.fn.maparg("H", "n") ~= "" then
-    vim.keymap.del("n", "H")
-  end
-  if vim.fn.maparg("L", "n") ~= "" then
-    vim.keymap.del("n", "L")
-  end
-  if vim.fn.maparg("s", "n") ~= "" then
-    vim.keymap.del("n", "s")
-  end
-  if vim.fn.maparg("S", "n") ~= "" then
-    vim.keymap.del("n", "S")
-  end
-end)
-
 --------------------------------------------------------------------------------
 -- No VSCode compatible mappings after this
 --------------------------------------------------------------------------------
@@ -123,7 +110,8 @@ map("n", "<M-h>", "<cmd>bprevious<CR>", { silent = true })
 map("i", '<C-BS>', '<C-w>', { silent = true })
 map("i", '<C-Del>', '<C-o>dw', { silent = true })
 
--- Function to capture keypress and show its mapping
+-- Function to capture keypress and show its mapping.
+-- Note: Many Neovim defaults keys are not mappings.
 function Capture_keypress()
   -- Wait for the next key press
   local key = vim.fn.getchar()
