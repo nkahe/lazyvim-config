@@ -14,22 +14,6 @@ create_cmd('Cdb', function()
   vim.cmd('pwd')
 end, { desc = "Change cwd to match current buffer's directory" })
 
--- Obsidian plugin. Change directory to my notes diretory and open,
--- Neotree and create empty window to right for padding.
-create_cmd('Obs', function()
-  vim.cmd('cd ~/Nextcloud/Notes')
-  vim.cmd("vnew")
-  -- vim.cmd("vertical resize 30")
-  -- Go back to the original window
-  vim.cmd("wincmd h")
-  vim.cmd('Neotree show')
-  vim.cmd('sleep 100ms')
-  -- vim.cmd("vertical resize 80")
-  vim.cmd("vertical resize 90")
-  -- Resize the new split to 80 columns
-  -- vim.cmd("edit '~/Documents/notes/1 Projektit/1 Todo.md'")
-end, { desc = "Change to Obsidian notes directory" })
-
 -- Trim trailing whitespace from the buffer
 create_cmd('Trim', function()
   local save_cursor = vim.fn.getpos(".")
