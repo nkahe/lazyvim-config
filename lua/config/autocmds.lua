@@ -5,31 +5,7 @@
 -- Get Neovim's config home directory
 -- local config_dir = vim.fn.stdpath("config") .. "/lua/config/"
 
--- Automatic file marks.
--- Converted from https://gist.github.com/romainl/3e0cb99343c72d04e9bc10f6d76ebbef
-local automatic_marks = vim.api.nvim_create_augroup("AutomaticMarks", { clear = true })
-
-local mappings = {
-    { pattern = { "*.css", "*.scss" }, command = "normal! mC" },
-    { pattern = { ".env*"  }, command = "normal! mE" },
-    { pattern = { "*.html" }, command = "normal! mH" },
-    { pattern = { "*.js", "*.ts" }, command = "normal! mJ" },
-    { pattern = { "*.lua" }, command = "normal! mL" },
-    { pattern = { "*.md"  }, command = "normal! mM" },
-    { pattern = { "*.sh"  }, command = "normal! mS" },
-    { pattern = { "*.vue" }, command = "normal! mV" },
-    { pattern = { "*.yml", "*.yaml" }, command = "normal! mY" },
-    { pattern = { "*.zsh" }, command = "normal! mZ" },
-}
-
-for _, map in ipairs(mappings) do
-    vim.api.nvim_create_autocmd("BufLeave", {
-        group = automatic_marks,
-        pattern = map.pattern,
-        command = map.command,
-    })
-end
-
+-- These autocmds should be usable in different configs.
 
 -- show cursor line only in active window
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
@@ -40,6 +16,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
     end
   end,
 })
+
 vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
   callback = function()
     if vim.wo.cursorline then
@@ -60,13 +37,9 @@ vim.api.nvim_create_autocmd("InsertLeave", {
     command = "set relativenumber",
 })
 
--- Disable diagnostics for these type by default
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
-  callback = function()
-    vim.diagnostic.enable(false)
-  end,
-})
+-- Disable spell check in LazyVim.
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
+
 
 -- Set background color for terminal
 vim.api.nvim_create_autocmd("TermOpen", {
@@ -79,25 +52,14 @@ vim.api.nvim_create_autocmd("TermOpen", {
     end,
 })
 
--- Autosource --------------------------------------------
-
--- Watches for saves specifically in the `lua/config/keymaps.lua` and `lua/config/options.lua` files
-local config_path = vim.fn.stdpath("config") .. "/lua/config/"
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = { config_path .. "keymaps.lua", config_path .. "options.lua" },
-  callback = function(args)
-    vim.cmd("source " .. args.file)
-    print("Sourced " .. args.file)
-  end,
-})
-
-local function get_terminal_name()
-  if vim.g.neovide then
-    terminalName = "Neovide"
-  end
-  return terminalName
-end
+-- -- Disable diagnostics for these type by default
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "markdown",
+--   callback = function()
+--     vim.diagnostic.enable(false)
+--     vim.opt_local.spell = false
+--   end,
+-- })
 
 -- Dynamic tab title change for Yakuake -------------------
 
@@ -119,7 +81,7 @@ end
 -- Get the current Yakuake session id using qdbus
 Session_id = vim.fn.system("qdbus org.kde.yakuake /yakuake/sessions org.kde.yakuake.activeSessionId")
 
--- Trim any extra whitespace from the session_id
+-- Trim any extra whitespace
 Session_id = vim.fn.trim(Session_id)
 
 -- If using Yakuake
@@ -147,15 +109,6 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
 })
 
 -- File formats -----------------------------------------
-
--- Overwrite Lazy default. If this is put to ftplugin or set globally it doesn't work.
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "txt" },
-  callback = function()
-    vim.opt_local.spell = false
-  end,
-})
-
 
 -- Obsidian.nvim - Switch automatically to correct Obsidian workspace
 
