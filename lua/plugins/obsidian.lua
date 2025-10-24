@@ -33,6 +33,11 @@ return {
     "use_alias_only",
     checkbox = {
       order = { " ", "x"}
+    },
+    -- Both this plugin and render-markdown offer rendering of markdown files.
+    -- It's not recommended to have both enabled so let's disable it.
+    ui = {
+      enable = false,
     }
   },
   keys = {
