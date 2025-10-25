@@ -21,12 +21,6 @@ local function get_terminal_name()
   return terminalName
 end
 
--- Overwrite Lazy default. If this is put to ftplugin or set globally it doesn't work.
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "txt" },
-  callback = function()
-    vim.diagnostic.enable(false)
-    vim.opt_local.spell = false
-  end,
-})
+-- Disable spell check.
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 
