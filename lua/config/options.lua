@@ -53,9 +53,6 @@ opt.virtualedit:append("block,onemore")
 
 -- vim.api.nvim_set_hl(0, 'NeoTreeGitUntracked', { fg = '#73c991' })
 
--- Don't show function names etc.
-vim.g.trouble_lualine = false
-
 -- GUI ------------------------------------------
 
 if g.neovide then
