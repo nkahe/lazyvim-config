@@ -37,9 +37,6 @@ vim.api.nvim_create_autocmd("InsertLeave", {
     command = "set relativenumber",
 })
 
--- Disable spell check in LazyVim.
-pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
-
 
 -- Set background color for terminal
 vim.api.nvim_create_autocmd("TermOpen", {

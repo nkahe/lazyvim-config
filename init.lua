@@ -2,3 +2,5 @@
 
 vim.opt.guifont = { "FiraCode Nerd Font", ":h10" }
 require("config.lazy")
+
+require("config.autocmds-lazyvim")

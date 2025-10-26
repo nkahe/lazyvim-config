@@ -1,5 +1,5 @@
 
--- LazyVim specific autocommands.
+-- LazyVim specific autocommands. This is sourced from init.lua.
 
 -- Autosource --------------------------------------------
 
@@ -20,6 +20,15 @@ local function get_terminal_name()
   end
   return terminalName
 end
+
+-- Source additional config files.
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    require("config.keymaps-lazyvim")
+    require("config.user-commands")
+  end,
+})
 
 -- Disable spell check.
 pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
