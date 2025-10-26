@@ -10,14 +10,6 @@ if vim.g.vscode then
   require("config.vscode")
 end
 
--- Restore some default mappings ------------------------------
-
--- Setups like LazyVim binds these by default.
-pcall(vim.keymap.del, "n", "H")
-pcall(vim.keymap.del, "n", "L")
-pcall(vim.keymap.del, "n", "s")
-pcall(vim.keymap.del, "n", "S")
-
 -- NOTE: For mappings "{ noremap = true }" is the default so no need to add that.
 
 -- Registers ----------------------------------------------
@@ -40,7 +32,11 @@ map({'n', 'v'}, "cP", '"+P',  { desc = "Paste from clipboard" })
 map({'n', 'v'}, "cd", '"+d',  { desc = "Delete to clipboard" })
 map({'n', 'v'}, "cD", '"+D',  { desc = "Delete end of line to clipboard" })
 map({'n', 'v'}, "cy", '"+y',  { desc = "Yank to clipboard" })
-map({'n', 'v'}, "cY", '"+Y',  { desc = "Yank end of line to clipboard" })
+
+map({'n', 'v'}, "gp", '"+p',  { desc = "Paste from clipboard" })
+map({'n', 'v'}, "gP", '"+P',  { desc = "Paste from clipboard" })
+-- Mapping cY doesn't work.
+map({'n'}, 'gY', '"+y$', { desc = "Yank end of line to clipboard" , noremap = false})
 
 -- GUI style insert mappings
 map({'n', 'v'}, '<S-Insert>', '"*P', { desc = "Paste selection" })
@@ -78,6 +74,12 @@ vim.keymap.set({'n', 'v'}, '<down>',  '<nop>')
 vim.keymap.set({'n', 'v'}, '<left>',  '<nop>')
 vim.keymap.set({'n', 'v'}, '<right>', '<nop>')
 
+-- Avoid accidentally pressing these.
+map({ "x", "n" }, "<S-Down>", "j")
+map({ "x", "n" }, "<S-Up>", "k")
+map({ "x", "n" }, "<S-Right>", "l")
+map({ "x", "n" }, "<S-Left>", "h")
+
 --------------------------------------------------------------------------------
 -- No VSCode compatible mappings after this
 --------------------------------------------------------------------------------
@@ -95,7 +97,7 @@ vim.api.nvim_set_keymap(
 
 -- Alt mappings can sometimes trigger with <esc> when using in terminal.
 
--- Moving lines
+-- Moving lines also with arrow keys.
 map("n", "<A-Down>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
 map("n", "<A-Up>",   "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
 map("i", "<A-Down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
@@ -156,12 +158,3 @@ if vim.g.neovide then
   -- Copy
   map('v', '<C-S-c>', '"+y')
 end
-
--- Minor tweaks ------------------------------------------
-
--- Accidentally press on Shift+{arrow} to just move cursor.
-map({ "x", "n" }, "<S-Down>", "j")
-map({ "x", "n" }, "<S-Up>", "k")
-map({ "x", "n" }, "<S-Right>", "l")
-map({ "x", "n" }, "<S-Left>", "h")
-
