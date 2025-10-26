@@ -7,6 +7,9 @@
 
 -- These autocmds should be usable in different configs.
 
+
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
+
 -- show cursor line only in active window
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
   callback = function()
