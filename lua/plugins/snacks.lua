@@ -1,9 +1,9 @@
 
 
 vim.keymap.set("n", "<C-`>", "<CMD>lua Snacks.terminal.toggle()<CR>",
-  { desc = "Toggle terminal" }, { silent = true })
+  { desc = "Toggle terminal", silent = true })
 vim.keymap.set("n", "<Leader>tt", "<CMD>lua Snacks.terminal.toggle()<CR>",
-  { desc = "Toggle terminal" }, { silent = true })
+  { desc = "Toggle terminal", silent = true })
 
 vim.keymap.set("n", "<leader>tf", function()
   -- A command needs specified to open in float.
@@ -50,6 +50,9 @@ return {
       },
     },
     picker = {
+      layout = {
+        preview = false
+      },
       sources = {
         files = {
           hidden = true
