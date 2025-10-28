@@ -30,8 +30,9 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  -- install = { colorscheme = { "tokyonight.nvim" } },
+  -- Default colorscheme is set in lua/plugins/1-lazyvim.lua.
   install = { colorscheme = { "vscode" } },
+  -- install = { colorscheme = { "tokyonight.nvim" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update

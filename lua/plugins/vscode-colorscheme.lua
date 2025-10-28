@@ -6,8 +6,13 @@
 -- theme in Visual Studio Code - https://github.com/Mofiqul/vscode.nvim
 
 return {
-  {
     "Mofiqul/vscode.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      vim.cmd([[colorscheme vscode]])
+    end,
     opts = {
       -- NOTE: mini.hipatterns doesn't hilight these but still works.
       color_overrides = {
@@ -46,6 +51,7 @@ return {
       TermCursorLine = { bg = "#010b0d" },
       }
     }
+}
 
     -- opts = function()
       -- local c = require("").get_colors()
@@ -58,10 +64,4 @@ return {
       --   },
       -- })
 
-  },
-  {
-    "LazyVim/LazyVim",
-    opts = { colorscheme = "vscode" },
-  }
-}
 
