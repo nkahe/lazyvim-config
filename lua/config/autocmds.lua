@@ -126,7 +126,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     local filepath = vim.fn.expand("%:p")
     local workspace = get_workspace_for_path(filepath)
     if workspace and workspace ~= last_workspace then
-      vim.cmd("ObsidianWorkspace " .. workspace)
+      vim.cmd("Obsidian workspace " .. workspace)
       last_workspace = workspace
     end
   end,

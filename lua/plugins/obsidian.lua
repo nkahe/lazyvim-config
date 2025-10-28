@@ -41,12 +41,12 @@ return {
     }
   },
   keys = {
-    { "<Leader>sO", "<cmd>ObsidianSearch<CR>", mode = "n", desc = "Obsidian search" },
-    { "<Leader>Nn", ":ObsidianNew ", mode = "n", desc = "🆕 New note" },
-    { "<Leader>No", "<cmd>ObsidianOpen<CR>", mode = "n", desc = "Open in Obsidian app" },
-    { "<Leader>Nr", "<cmd>ObsidianRename<CR>", mode = "n", desc = "Rename note" },
-    { "<Leader>Ns", "<cmd>ObsidianSearch<CR>", mode = "n", desc = "Search note" },
-    { "<Leader>Nq", "<cmd>ObsidianQuickSwitch<CR>", mode = "n", desc = "Quick switch" },
-    { "<Leader>Nw", "<cmd>ObsidianWorkspace<CR>", mode = "n", desc = "Change workspace" },
+    { "<Leader>sO", "<cmd>Obsidian search<CR>", mode = "n", desc = "Obsidian search" },
+    { "<Leader>Nn", "<cmd>Obsidian new<CR>", mode = "n", desc = "🆕 New note" },
+    { "<Leader>No", "<cmd>Obsidian open<CR>", mode = "n", desc = "Open in Obsidian app" },
+    { "<Leader>Nr", "<cmd>Obsidian rename<CR>", mode = "n", desc = "Rename note" },
+    { "<Leader>Ns", "<cmd>Obsidian search<CR>", mode = "n", desc = "Search note" },
+    { "<Leader>Nq", "<cmd>Obsidian quick_switch<CR>", mode = "n", desc = "Quick switch" },
+    { "<Leader>Nw", "<cmd>Obsidian workspace<CR>", mode = "n", desc = "Change workspace" },
   }
 }
