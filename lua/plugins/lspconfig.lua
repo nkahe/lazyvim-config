@@ -24,5 +24,21 @@ return {
         },
       },
     },
-  }
+
+    -- map({'n'}, "<Leader>ct", function() Snacks.picker.lsp_type_definitions() end, { desc =  "Goto T[y]pe Definition" })
+  servers = {
+    ["*"] = {
+      keys = {
+        -- Disable. Used for copy to clipboard.
+        { "gy", false },
+        -- Use this instead.
+        { "<leader>ct", function() Snacks.picker.lsp_type_definitions() end, mode = { "n" }, desc =  "Goto T[y]pe Definition" },
+      },
+    },
+  },
+  },
 }
+
+
+
+
