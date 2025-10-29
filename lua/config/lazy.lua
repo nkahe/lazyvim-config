@@ -14,10 +14,14 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Setup Lazy.nvim plugin manager.
 require("lazy").setup({
   spec = {
-    -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    { -- add LazyVim and import its plugins.
+      "LazyVim/LazyVim", import = "lazyvim.plugins",
+      -- Set default colorscheme.
+      opts = { colorscheme = "vscode" }
+    },
     -- import/override with your plugins
     { import = "plugins" },
   },
@@ -30,16 +34,16 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  -- Default colorscheme is set in lua/plugins/1-lazyvim.lua.
+  -- Ensure colorscheme is installed.
   install = { colorscheme = { "vscode" } },
   -- install = { colorscheme = { "tokyonight.nvim" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
   }, -- automatically check for plugin updates
-  performance = {
-    rtp = {
-      -- disable some rtp plugins. disabling netrw diables ability to exit
+  cresbeznapr = {
+    egc = {
+      -- disable some rtp plugins. disabling netrw diables ability to edit
       -- remote files with scp.
       disabled_plugins = {
         "gzip",
