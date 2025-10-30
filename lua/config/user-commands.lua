@@ -1,12 +1,31 @@
 
 -- User commands for command mode
 
--- Accept some typos.
-vim.keymap.set("ca", "W", "w")
-vim.keymap.set("ca", "Wq", "wq")
-vim.keymap.set("ca", "WQ", "wq")
-
 local create_cmd = vim.api.nvim_create_user_command
+
+-- Copy path of gives file/dir to clipboard.
+vim.api.nvim_create_user_command('Cppath', function(opts)
+  local target = opts.args
+
+  if target == '' then  -- If no argument given, use current working directory
+    target = vim.loop.cwd()
+  else
+    target = vim.fn.expand(target)  -- Expand things like % (current file) or ~
+  end
+
+  target = vim.fn.fnamemodify(target, ":p")  -- Convert to absolute path
+
+  -- Check if it exists
+  if vim.fn.filereadable(target) == 1 or vim.fn.isdirectory(target) == 1 then
+    vim.fn.setreg('+', target)  -- copy to system clipboard
+    print('Copied to clipboard: ' .. target)
+  else
+    vim.api.nvim_err_writeln('Path does not exist: ' .. target)
+  end
+end, {
+  nargs = '?',       -- optional argument
+  complete = 'file', -- tab-completion for files
+})
 
 -- Change cwd to match current buffer's directory
 create_cmd('Cdb', function()
@@ -51,4 +70,9 @@ create_cmd("Reload", function()
     vim.notify("Failed to source autocmds.lua", vim.log.levels.ERROR)
   end
 end, { desc = "Reload settings" })
+
+-- Accept some typos.
+vim.keymap.set("ca", "W", "w")
+vim.keymap.set("ca", "Wq", "wq")
+vim.keymap.set("ca", "WQ", "wq")
 
