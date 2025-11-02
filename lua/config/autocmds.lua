@@ -99,35 +99,3 @@ vim.api.nvim_create_autocmd("QuickFixCmdPost", {
   end,
 })
 
--- File formats -----------------------------------------
-
--- Obsidian.nvim - Switch automatically to correct Obsidian workspace
-
--- Track the last workspace to avoid redundant switches
-local last_workspace = nil
-
-local function get_workspace_for_path(filepath)
-  local workspaces = {
-    { name = "notes", path = vim.fn.expand("~/Nextcloud/notes") },
-    { name = "local", path = vim.fn.expand("~/Documents/local_notes") },
-  }
-
-  for _, ws in ipairs(workspaces) do
-    if filepath:find(vim.fn.escape(ws.path, ".*"), 1, true) == 1 then
-      return ws.name
-    end
-  end
-  return nil
-end
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.md",
-  callback = function()
-    local filepath = vim.fn.expand("%:p")
-    local workspace = get_workspace_for_path(filepath)
-    if workspace and workspace ~= last_workspace then
-      vim.cmd("Obsidian workspace " .. workspace)
-      last_workspace = workspace
-    end
-  end,
-})

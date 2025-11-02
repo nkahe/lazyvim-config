@@ -1,5 +1,10 @@
 
--- if true then return {} end
+-- if true then return {} end  -- Uncomment to disable
+
+-- Switch automatically to correct Obsidian workspace. Doesn't work if included in
+-- specs config -function.
+
+-- Track the last workspace to avoid redundant switches
 
 -- epwalsh/obsidian.nvim: Obsidian 🤝 Neovim https://github.com/epwalsh/obsidian.nvim
 return {
@@ -19,6 +24,41 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
+
+  init = function()
+    -- Switch automatically to correct Obsidian workspace if .md file is part
+    -- of known workspace.
+
+    -- Track the last workspace to avoid redundant switches
+    local last_workspace = nil
+
+    local function get_workspace_for_path(filepath)
+      local workspaces = {
+        { name = "notes", path = vim.fn.expand("~/Nextcloud/notes") },
+        { name = "local", path = vim.fn.expand("~/Documents/local_notes") },
+      }
+
+      for _, ws in ipairs(workspaces) do
+        if filepath:find(vim.fn.escape(ws.path, ".*"), 1, true) == 1 then
+          return ws.name
+        end
+      end
+      return nil
+    end
+
+    vim.api.nvim_create_autocmd("BufEnter", {
+      pattern = "*.md",
+      callback = function()
+        local filepath = vim.fn.expand("%:p")
+        local workspace = get_workspace_for_path(filepath)
+        if workspace and workspace ~= last_workspace then
+          vim.cmd("Obsidian workspace " .. workspace)
+          last_workspace = workspace
+        end
+      end,
+    })
+  end,
+
   opts = {
     workspaces = {
       {
@@ -48,5 +88,39 @@ return {
     { "<Leader>Ns", "<cmd>Obsidian search<CR>", mode = "n", desc = "Search note" },
     { "<Leader>Nq", "<cmd>Obsidian quick_switch<CR>", mode = "n", desc = "Quick switch" },
     { "<Leader>Nw", "<cmd>Obsidian workspace<CR>", mode = "n", desc = "Change workspace" },
-  }
+  },
+
+  -- config = function(_, opts)
+  --   -- Switch automatically to correct Obsidian workspace
+  --
+  --   -- Track the last workspace to avoid redundant switches
+  --   local last_workspace = nil
+  --
+  --   local function get_workspace_for_path(filepath)
+  --     local workspaces = {
+  --       { name = "notes", path = vim.fn.expand("~/Nextcloud/notes") },
+  --       { name = "local", path = vim.fn.expand("~/Documents/local_notes") },
+  --     }
+  --
+  --     for _, ws in ipairs(workspaces) do
+  --       if filepath:find(vim.fn.escape(ws.path, ".*"), 1, true) == 1 then
+  --         return ws.name
+  --       end
+  --     end
+  --     return nil
+  --   end
+  --
+  --   vim.api.nvim_create_autocmd("BufEnter", {
+  --     pattern = "*.md",
+  --     callback = function()
+  --       local filepath = vim.fn.expand("%:p")
+  --       local workspace = get_workspace_for_path(filepath)
+  --       if workspace and workspace ~= last_workspace then
+  --         vim.cmd("Obsidian workspace " .. workspace)
+  --         last_workspace = workspace
+  --       end
+  --     end,
+  --   })
+  -- end -- config
+
 }
