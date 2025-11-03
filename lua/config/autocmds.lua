@@ -29,19 +29,20 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
   end,
 })
 
--- Disable relative numbers in Insert mode
-vim.api.nvim_create_autocmd("InsertEnter", {
-    pattern = "*",
-    command = "set norelativenumber",
-})
--- Enable relative numbers when leaving Insert mode
-vim.api.nvim_create_autocmd("InsertLeave", {
-    pattern = "*",
-    command = "set relativenumber",
-})
+-- Makes cursor jump in Snacks input fields when mode changes.
+-- -- Disable relative numbers in Insert mode
+-- vim.api.nvim_create_autocmd("InsertEnter", {
+--     pattern = "*",
+--     command = "set norelativenumber",
+-- })
+-- -- Enable relative numbers when leaving Insert mode
+-- vim.api.nvim_create_autocmd("InsertLeave", {
+--     pattern = "*",
+--     command = "set relativenumber",
+-- })
 
 
--- Set background color for terminal
+-- Set background color for terminal. Doesn't always work but best effort.
 vim.api.nvim_create_autocmd("TermOpen", {
     pattern = "*",
     callback = function()
@@ -54,34 +55,34 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- Dynamic tab title change for Yakuake -------------------
 
--- Function to update the Yakuake terminal tab title
-local function update_yakuake_title()
-  -- Get the current buffer name (just the file name, not the full path)
-  local buffer_name = vim.fn.expand('%:t')
-
-  -- If no file is open, we just set the title to "Neovim" or similar
-  if buffer_name == "" then
-    buffer_name = "Neovim"
-  end
-
-  -- Set the Yakuake tab title using the session_id and buffer_name
-  local qdbus_cmd = "qdbus org.kde.yakuake /yakuake/tabs setTabTitle %s \"%s\""
-  vim.fn.system(string.format(qdbus_cmd, Session_id, buffer_name))
-end
-
--- Get the current Yakuake session id using qdbus
-Session_id = vim.fn.system("qdbus org.kde.yakuake /yakuake/sessions org.kde.yakuake.activeSessionId")
-
--- Trim any extra whitespace
-Session_id = vim.fn.trim(Session_id)
-
--- If using Yakuake
-if Session_id ~= "" then
-  -- Autocmd to update Yakuake title on buffer changed
-  vim.api.nvim_create_autocmd({"BufEnter", "BufWritePost"}, {
-    callback = update_yakuake_title
-  })
-end
+-- -- Function to update the Yakuake terminal tab title
+-- local function update_yakuake_title()
+--   -- Get the current buffer name (just the file name, not the full path)
+--   local buffer_name = vim.fn.expand('%:t')
+--
+--   -- If no file is open, we just set the title to "Neovim" or similar
+--   if buffer_name == "" then
+--     buffer_name = "Neovim"
+--   end
+--
+--   -- Set the Yakuake tab title using the session_id and buffer_name
+--   local qdbus_cmd = "qdbus org.kde.yakuake /yakuake/tabs setTabTitle %s \"%s\""
+--   vim.fn.system(string.format(qdbus_cmd, Session_id, buffer_name))
+-- end
+--
+-- -- Get the current Yakuake session id using qdbus
+-- Session_id = vim.fn.system("qdbus org.kde.yakuake /yakuake/sessions org.kde.yakuake.activeSessionId")
+--
+-- -- Trim any extra whitespace
+-- Session_id = vim.fn.trim(Session_id)
+--
+-- -- If using Yakuake
+-- if Session_id ~= "" then
+--   -- Autocmd to update Yakuake title on buffer changed
+--   vim.api.nvim_create_autocmd({"BufEnter", "BufWritePost"}, {
+--     callback = update_yakuake_title
+--   })
+-- end
 
 -- Always open QuickFix windows below current window
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
