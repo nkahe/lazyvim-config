@@ -1,6 +1,13 @@
 
 -- LazyVim specific autocommands. This is sourced from init.lua.
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    local filename = vim.fn.expand("%:t") ~= "" and vim.fn.expand("%:t") or "[No Name]"
+    vim.o.titlestring = "Lazyvim - " .. filename
+  end,
+})
+
 -- Autosource --------------------------------------------
 
 -- Watches for saves specifically in the `lua/config/keymaps.lua` and `lua/config/options.lua` files
@@ -29,7 +36,3 @@ vim.api.nvim_create_autocmd("User", {
     require("config.user-commands")
   end,
 })
-
--- Disable spell check.
-pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
-
