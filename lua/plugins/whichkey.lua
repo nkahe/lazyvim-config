@@ -7,7 +7,7 @@ return {
     -- extend your existing spec
     opts.spec = vim.list_extend(opts.spec or {}, {
       {
-        { "<Leader>N", group = "Notes (Obsidian)" },
+        { "<Leader>o", group = "Obsidian" },
         { "<Leader>t", group = "Terminal" },
         -- 👇 global WhichKey
         { "<Leader>?", "<cmd>WhichKey<cr>", desc = "WhichKey (global)" },
