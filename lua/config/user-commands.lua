@@ -33,6 +33,48 @@ create_cmd('Cdb', function()
   vim.cmd('pwd')
 end, { desc = "Change cwd to match current buffer's directory" })
 
+-- Open messages in a split so can copy it
+vim.api.nvim_create_user_command("MessagesSplit", function()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "messages" then
+      vim.api.nvim_set_current_win(win)
+      vim.cmd("checktime") -- refresh
+      return
+    end
+  end
+
+  vim.cmd("belowright new")
+  vim.cmd("silent! put =execute('messages')")
+  vim.bo.modifiable = false
+  vim.bo.buftype = "nofile"
+  vim.bo.buflisted = false
+  vim.bo.filetype = "messages"
+  vim.bo.swapfile = false
+end, {})
+
+
+-- Create a command :RecoverDiff to compare recovered buffer vs original file
+vim.api.nvim_create_user_command('RecoverDiff', function()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname == '' then
+    print('No file associated with current buffer')
+    return
+  end
+
+  -- Get recovered buffer name (usually already loaded after choosing "Recover")
+  local original = vim.fn.fnamemodify(bufname, ':p')
+  if vim.fn.filereadable(original) == 0 then
+    print('Original file does not exist: ' .. original)
+    return
+  end
+
+  -- Open the original file in a vertical diff split
+  vim.cmd('vert diffsplit ' .. vim.fn.fnameescape(original))
+  print('Comparing recovered buffer ↔ original file')
+end, {})
+
+
 -- Trim trailing whitespace from the buffer
 create_cmd('Trim', function()
   local save_cursor = vim.fn.getpos(".")
