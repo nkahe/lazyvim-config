@@ -60,9 +60,24 @@ return {
         end
       end,
     })
-  end,
 
+    local map = vim.keymap.set
+    local function nmap(lhs, rhs, desc)
+      map("n", lhs, rhs, { desc = desc, silent = true, noremap = true })
+    end
+
+    nmap("<Leader>sO", "<cmd>Obsidian search<CR>", "Obsidian search")
+    nmap("<Leader>on", "<cmd>Obsidian new<CR>", "🆕 New note")
+    nmap("<Leader>oo", "<cmd>Obsidian open<CR>", "Open in Obsidian app")
+    nmap("<Leader>or", "<cmd>Obsidian rename<CR>", "Rename note")
+    nmap("<Leader>os", "<cmd>Obsidian search<CR>", "Search note")
+    nmap("<Leader>oq", "<cmd>Obsidian quick_switch<CR>", "Quick switch")
+    nmap("<Leader>ow", "<cmd>Obsidian workspace<CR>", "Change workspace")
+  end,
+  ---@module 'obsidian'
+  ---@type obsidian.config
   opts = {
+    legacy_commands = false,
     workspaces = {
       {
         name = "notes",
@@ -82,14 +97,5 @@ return {
     ui = {
       enable = false,
     }
-  },
-  keys = {
-    { "<Leader>sO", "<cmd>Obsidian search<CR>", mode = "n", desc = "Obsidian search" },
-    { "<Leader>Nn", "<cmd>Obsidian new<CR>", mode = "n", desc = "🆕 New note" },
-    { "<Leader>No", "<cmd>Obsidian open<CR>", mode = "n", desc = "Open in Obsidian app" },
-    { "<Leader>Nr", "<cmd>Obsidian rename<CR>", mode = "n", desc = "Rename note" },
-    { "<Leader>Ns", "<cmd>Obsidian search<CR>", mode = "n", desc = "Search note" },
-    { "<Leader>Nq", "<cmd>Obsidian quick_switch<CR>", mode = "n", desc = "Quick switch" },
-    { "<Leader>Nw", "<cmd>Obsidian workspace<CR>", mode = "n", desc = "Change workspace" },
   },
 }
