@@ -1,7 +1,9 @@
+if true then return {} end
+
 return {
   "sphamba/smear-cursor.nvim",
+  -- In GUI let it handle this.
   cond = function()
-    -- Only load if not running in a GUI
     return vim.fn.has("gui_running") == 0
   end,
   opts = {                         -- Default  Range

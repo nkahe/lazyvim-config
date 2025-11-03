@@ -5,6 +5,8 @@
 local opt = vim.opt
 local g = vim.g
 
+vim.g.colors_name = "vscode"
+
 -- No format on save.
 g.autoformat = false
 

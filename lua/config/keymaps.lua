@@ -1,5 +1,5 @@
 -- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set:
+-- In Lazyvim default keymaps that are always set:
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
@@ -33,6 +33,7 @@ map({'n', 'v'}, "cd", '"+d',  { desc = "Delete to clipboard" })
 map({'n', 'v'}, "cD", '"+D',  { desc = "Delete end of line to clipboard" })
 map({'n', 'v'}, "cy", '"+y',  { desc = "Yank to clipboard" })
 
+map({'n', 'v'}, "gy", '"+y',  { desc = "Yank to clipboard" })
 map({'n', 'v'}, "gp", '"+p',  { desc = "Paste from clipboard" })
 map({'n', 'v'}, "gP", '"+P',  { desc = "Paste from clipboard" })
 -- Mapping cY doesn't work.
@@ -88,10 +89,7 @@ if vim.g.vscode then
   return
 end
 
-vim.api.nvim_set_keymap(
-  "v",
-  "<LocalLeader>w",
-  ":!fmt -w 80<CR>",
+vim.api.nvim_set_keymap( "v", "<LocalLeader>W", ":!fmt -w 80<CR>",
   { desc = "Wrap text to 80 char", noremap = true, silent = true }
 )
 
@@ -114,6 +112,7 @@ map("i", '<C-Del>', '<C-o>dw', { silent = true })
 
 -- Function to capture keypress and show its mapping.
 -- Note: Many Neovim defaults keys are not mappings.
+-- TODO: Work with multi-press keymaps and not only single keys.
 function Capture_keypress()
   -- Wait for the next key press
   local key = vim.fn.getchar()
@@ -133,10 +132,10 @@ vim.api.nvim_set_keymap('n', '<leader>k', ':lua Capture_keypress()<CR>',
 
 map("n", "<Leader>tb", "<CMD>terminal<CR>", { desc = "Open in new buffer" })
 
--- Not all terminals support this.
+-- Not all terminals support this keybindings.
 map("t", "<C-`>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 
--- Tap C-\ twice to exit terminal mode
+-- Tap C-\ twice to exit terminal mode. Default C-\ C-n.
 map('t', [[<C-\><C-\>]], [[<C-\><C-n>]], { silent = true })
 
 vim.keymap.set("n", "<leader>tv", function()
