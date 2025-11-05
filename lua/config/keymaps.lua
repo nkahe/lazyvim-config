@@ -89,6 +89,14 @@ if vim.g.vscode then
   return
 end
 
+-- C-g to show full path of a file instead of truncated one.
+vim.keymap.set("n", "<C-g>", function()
+  local file = vim.fn.expand("%:p") or "[No Name]"
+  local line = vim.fn.line(".")
+  local col = vim.fn.col(".")
+  vim.api.nvim_echo({ { string.format("%s  line %d col %d", file, line, col), "Normal" } }, false, {})
+end, { desc = "Show full file path and cursor position" })
+
 vim.api.nvim_set_keymap( "v", "<LocalLeader>W", ":!fmt -w 80<CR>",
   { desc = "Wrap text to 80 char", noremap = true, silent = true }
 )

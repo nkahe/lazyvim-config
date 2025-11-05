@@ -3,6 +3,36 @@
 
 local create_cmd = vim.api.nvim_create_user_command
 
+-- Clear oldfiles eg. recent files.
+vim.api.nvim_create_user_command("ClearRecent", function()
+  vim.cmd([[
+    rshada!
+    let g:oldfiles = []
+    wshada!
+  ]])
+  print("Cleared all recent files.")
+end, {})
+
+-- Trim oldfiles eg. entries with are not under cwd.
+vim.api.nvim_create_user_command("TrimRecent", function()
+  local cwd = vim.fn.getcwd()
+  local oldfiles = vim.v.oldfiles or {}
+  local keep = {}
+
+  for _, path in ipairs(oldfiles) do
+    if vim.startswith(path, cwd) then
+      table.insert(keep, path)
+    end
+  end
+
+  -- Save the filtered list to ShaDa
+  vim.fn.writefile(keep, vim.fn.stdpath("state") .. "/shada.tmp")
+  vim.cmd("rshada!")
+  vim.g.oldfiles = keep
+  vim.cmd("wshada!")
+  print("Trimmed recent files to those under: " .. cwd)
+end, {})
+
 -- Copy path of gives file/dir to clipboard.
 vim.api.nvim_create_user_command('Cppath', function(opts)
   local target = opts.args
