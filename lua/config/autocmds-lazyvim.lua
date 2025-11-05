@@ -1,12 +1,7 @@
 
 -- LazyVim specific autocommands. This is sourced from init.lua.
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  callback = function()
-    local filename = vim.fn.expand("%:t") ~= "" and vim.fn.expand("%:t") or "[No Name]"
-    vim.o.titlestring = "Lazyvim - " .. filename
-  end,
-})
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
 
 -- Autosource --------------------------------------------
 
