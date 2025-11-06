@@ -1,5 +1,6 @@
 return {
   "dstein64/nvim-scrollview",
+  enable = false,
   opts = {
     excluded_filetypes = { "neotree" },
     current_only = true,
