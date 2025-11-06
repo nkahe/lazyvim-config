@@ -19,30 +19,41 @@ return {
         -- vscPopupBack = '#262626',
       },
 
-      group_overrides = {
-        RenderMarkdownH1Bg = { bg = '#22263a' },
-        RenderMarkdownH2Bg = { bg = '#2c272b' },
-        RenderMarkdownH3Bg = { bg = '#242b2b' },
-        RenderMarkdownH4Bg = { bg = '#172830' },
+    group_overrides = {
 
-        -- By default Snacks Explorer tree and directory names are too dark.
-        -- Make them same as other background.
-        SnacksPickerTree = { bg = '#252525', },
-        SnacksPickerDirectory = { bg ='#252525' },
-        SnacksPickerCol = { bg ='#252525' },
+      -- RenderMarkdown
+      RenderMarkdownH1Bg = { bg = '#22263a' },
+      RenderMarkdownH2Bg = { bg = '#2c272b' },
+      RenderMarkdownH3Bg = { bg = '#242b2b' },
+      RenderMarkdownH4Bg = { bg = '#172830' },
 
-        -- Make input box less striking.
-        SnacksPickerInputBorder = { fg = "#595959", bg = "NONE" },
-        SnacksPickerInputTitle = { fg = "#919191", bg = "NONE" },
-        SnacksPickerGitStatusUntracked = { fg = "#8b8b8b", bg = "NONE" },
+      -- Snacks
 
-        NoiceCmdlinePopupBorder = { fg="#a7a7a7" },
-        NoiceCmdlinePrompt = { fg="#a7a7a7" },
+      -- By default Snacks Explorer tree and directory names are too dark.
+      -- Make them same as other background.
+      SnacksPickerTree = { bg = '#252525', },
+      SnacksPickerDirectory = { bg ='#252525' },
+      SnacksPickerCol = { bg ='#252525' },
 
-        -- New highlight groups used in autocmd to change terminal colors.
-        TermBackground = { bg = "#121212" },
-        TermCursorLine = { bg = "none" }
-      }
+      -- Make input box less striking.
+      SnacksPickerInputBorder = { fg = "#595959", bg = "NONE" },
+      SnacksPickerInputTitle = { fg = "#919191", bg = "NONE" },
+      SnacksPickerGitStatusUntracked = { fg = "#8b8b8b", bg = "NONE" },
+
+      SnacksNotifierMinimal = { bg = "#1b1b1b" },
+
+      -- Noice
+      NoiceCmdlinePopup = { bg = "#262626" },
+      NoiceCmdlinePopupBorder = { fg = "#7f7f7f" },
+      NoiceCmdlinePopupBorderSearch = { fg = "#b5b5b5" },
+
+      NoiceCmdlinePrompt = { fg = "#ffffff" },
+      NoiceCursor = { fg = "#ffffff" },
+
+      -- New highlight groups used in autocmd to change terminal colors.
+      TermBackground = { bg = "#121212" },
+      TermCursorLine = { bg = "none" }
+    }
 
     },
   config = function(_, opts)
