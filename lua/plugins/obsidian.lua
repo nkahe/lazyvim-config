@@ -1,11 +1,16 @@
 
 -- Obsidian.nvim https://github.com/obsidian-nvim/obsidian.nvim
 
+-- Workspaces / Vaults.
+local notes_dir = vim.fn.expand('~/Nextcloud/notes')
+local localnotes_dir = vim.fn.expand('~/Documents/local_notes')
+
 return {
   "obsidian-nvim/obsidian.nvim",
   -- "epwalsh/obsidian.nvim",
   version = "*",  -- recommended, use latest release instead of latest commit
-  -- lazy = true,
+  lazy = true,
+  cmd = "Obsidian",
   -- ft = "markdown",
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   -- event = {
@@ -15,18 +20,26 @@ return {
   --   "BufReadPre " .. vim.fn.expand("~/Nextcloud/notes/**/*.md"),
   --   "BufNewFile " .. vim.fn.expand("~/Nextcloud/notes/**/*.md"),
   -- },
-  lazy = true,
   -- ft = "markdown",
   event = {
     -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
     -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
     -- refer to `:h file-pattern` for more examples
-    -- "BufReadPre path/to/my-vault/*.md",
-    -- "BufNewFile path/to/my-vault/*.md",
-    "BufReadPre " .. vim.fn.expand "~" .. "/Nextcloud/notes/*.md",
-    "BufNewFile " .. vim.fn.expand "~" .. "/Documents/local_notes/*.md"
+    "BufReadPre " .. notes_dir .. "/*.md",
+    "BufNewFile " .. notes_dir .. "/*.md",
+    "BufReadPre " .. localnotes_dir .. "/*.md",
+    "BufNewFile " .. localnotes_dir .. "/*.md",
   },
-  dependencies = { "nvim-lua/plenary.nvim" },
+  dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim"  },
+  keys = {
+    { "<Leader>sO", "<cmd>Obsidian search<CR>",       desc = "Obsidian search" },
+    { "<Leader>on", "<cmd>Obsidian new<CR>",          desc = "🆕 New note" },
+    { "<Leader>oo", "<cmd>Obsidian open<CR>",         desc = "Open in Obsidian app" },
+    { "<Leader>or", "<cmd>Obsidian rename<CR>",       desc = "Rename note" },
+    { "<Leader>os", "<cmd>Obsidian search<CR>",       desc = "Search note" },
+    { "<Leader>oq", "<cmd>Obsidian quick_switch<CR>", desc = "Quick switch" },
+    { "<Leader>ow", "<cmd>Obsidian workspace<CR>",    desc = "Change workspace" },
+  },
   init = function()
     -- Switch automatically to correct Obsidian workspace. (doesn't work if
     -- placed to config -function).
@@ -37,8 +50,8 @@ return {
 
     local function get_workspace_for_path(filepath)
       local workspaces = {
-        { name = "notes", path = vim.fn.expand("~/Nextcloud/notes") },
-        { name = "local", path = vim.fn.expand("~/Documents/local_notes") },
+        { name = "notes", path = notes_dir },
+        { name = "local", path = localnotes_dir },
       }
 
       for _, ws in ipairs(workspaces) do
@@ -61,31 +74,25 @@ return {
       end,
     })
 
-    local map = vim.keymap.set
-    local function nmap(lhs, rhs, desc)
-      map("n", lhs, rhs, { desc = desc, silent = true, noremap = true })
-    end
-
-    nmap("<Leader>sO", "<cmd>Obsidian search<CR>", "Obsidian search")
-    nmap("<Leader>on", "<cmd>Obsidian new<CR>", "🆕 New note")
-    nmap("<Leader>oo", "<cmd>Obsidian open<CR>", "Open in Obsidian app")
-    nmap("<Leader>or", "<cmd>Obsidian rename<CR>", "Rename note")
-    nmap("<Leader>os", "<cmd>Obsidian search<CR>", "Search note")
-    nmap("<Leader>oq", "<cmd>Obsidian quick_switch<CR>", "Quick switch")
-    nmap("<Leader>ow", "<cmd>Obsidian workspace<CR>", "Change workspace")
   end,
   ---@module 'obsidian'
   ---@type obsidian.config
   opts = {
     legacy_commands = false,
+    ---@class obsidian.config.PickerOpts
+    ---
+    ---@field name obsidian.config.Picker|?
+    picker = {
+      name = 'snacks.pick',
+    },
     workspaces = {
       {
         name = "notes",
-        path = "~/Nextcloud/notes",
+        path = notes_dir,
       },
       {
         name = "local",
-        path = "~/Documents/local_notes",
+        path = localnotes_dir,
       },
     },
     "use_alias_only",
