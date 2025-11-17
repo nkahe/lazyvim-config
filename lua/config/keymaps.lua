@@ -1,11 +1,10 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- In Lazyvim default keymaps that are always set:
--- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+
+-- These keymaps are shared between my different Neovim configurations.
 
 local map = vim.keymap.set
 
--- Mappings that are only used when run embedded in VSCode.
+-- Mappings that are *only* used when run embedded in VSCode. Mappings below
+-- should be also vscode compatible. Non-compatible mappings are at the end of file.
 if vim.g.vscode then
   require("config.vscode")
 end
@@ -18,7 +17,7 @@ end
 
 -- AltGr + d in nordic layout
 map({'n', 'v'}, "ð", '"_d', { desc = "Delete without yanking" })
-map({'n', 'v'}, "Ð", '"_d', { desc = "AltGr-D Delete to end of line without yanking" })
+map({'n', 'v'}, "Ð", '"_d', { desc = "Delete to end of line without yanking" })
 -- map("x", "<Leader>p", '"_dP', { desc = "Paste" })
 
 map({'n', 'v'}, "<Del>", '"_x', { desc = "which_key_ignore" })
@@ -27,48 +26,99 @@ map({'n', 'v'}, "x", '"_x', { desc = "which_key_ignore" })
 map({'n', 'v'}, "X", '"_X', { desc = "which_key_ignore" })
 
 -- Clipboard operators
-map({'n', 'v'}, "cp", '"+p',  { desc = "Paste from clipboard" })
-map({'n', 'v'}, "cP", '"+P',  { desc = "Paste from clipboard" })
-map({'n', 'v'}, "cd", '"+d',  { desc = "Delete to clipboard" })
-map({'n', 'v'}, "cD", '"+D',  { desc = "Delete end of line to clipboard" })
-map({'n', 'v'}, "cy", '"+y',  { desc = "Yank to clipboard" })
+map({'n', 'v'}, "cp", '"+p', { desc = "Paste from clipboard" })
+map({'n', 'v'}, "gp", '"+p', { desc = "Paste from clipboard" })
+map({'n', 'v'}, "cP", '"+P', { desc = "Paste from clipboard" })
+map({'n', 'v'}, "gP", '"+P', { desc = "Paste from clipboard" })
 
-map({'n', 'v'}, "gy", '"+y',  { desc = "Yank to clipboard" })
-map({'n', 'v'}, "gp", '"+p',  { desc = "Paste from clipboard" })
-map({'n', 'v'}, "gP", '"+P',  { desc = "Paste from clipboard" })
+map({'n', 'v'}, "cd", '"+d', { desc = "Delete to clipboard" })
+map({'n', 'v'}, "cD", '"+D', { desc = "Delete end of line to clipboard" })
+map({'n', 'v'}, "cy", '"+y', { desc = "Yank to clipboard" })
+map({'n', 'v'}, "gy", '"+y', { desc = "Yank to clipboard" })
+map({'x'}, "<C-c>", '"+y', { desc = "Yank to clipboard" })
 -- Mapping cY doesn't work.
 map({'n'}, 'gY', '"+y$', { desc = "Yank end of line to clipboard" , noremap = false})
 
 -- GUI style insert mappings
 map({'n', 'v'}, '<S-Insert>', '"*P', { desc = "Paste selection" })
 map('i', '<S-Insert>', '<C-o>"*P')
+map('i', '<C-v>', '<C-o>"+P')
+map('x', '<C-c>', '"+y')
 map('t', '<S-Insert>', '<C-\\><C-n>"*Pi')
 map('c', '<S-Insert>', '<C-R>*')
 
-map('x', '<C-Insert>', '"+y')
+-- Paste below cursorline and reindent text properly.
+vim.keymap.set("n", "]p", function()
+  local before = vim.fn.getpos(".")
+  vim.cmd("normal! ]p")
+  local after = vim.fn.getpos(".")
+  vim.cmd(string.format("normal! %dG=`]`", before[2]))
+end, { noremap = true, desc = "Paste below and reindent" })
+
+-- Paste above cursorline and reindent text properly.
+vim.keymap.set("n", "[p", function()
+  local before = vim.fn.getpos(".")
+  vim.cmd("normal! [p")  -- paste above
+  local after = vim.fn.getpos(".")
+  -- reindent pasted text
+  vim.cmd(string.format("normal! %dG=`[", before[2]))
+end, { noremap = true, desc = "Paste above and reindent"  })
+
+-- Copy file name to clipboard
+vim.keymap.set("n", "<leader>fN", function()
+  local filename = vim.fn.expand("%:t")
+  if filename == "" then
+    vim.notify("No file associated with this buffer", vim.log.levels.ERROR)
+    return
+  end
+  vim.fn.setreg("+", filename)
+  vim.notify("Copied filename: " .. filename)
+end, { desc = "Copy file name" })
+
+vim.keymap.set("n", "<Leader>fs", function()
+  local file = vim.fn.expand("%:p")
+  if file:match("%.lua$") then
+    vim.cmd("luafile " .. vim.fn.fnameescape(file))
+    vim.notify("Sourced current file", vim.log.levels.INFO)
+  elseif file:match("%.vim$") then
+    vim.cmd("source " .. vim.fn.fnameescape(file))
+    vim.notify("Sourced current file", vim.log.levels.INFO)
+  else
+    vim.notify("Not a .lua or .vim file", vim.log.levels.WARN)
+  end
+end, { desc = "Source current file" })
+
 
 -- For GUI only is in section at end part of file.
 
 -- Misc ---------------------------------------------------
 
+-- If making search while text is selected, insert selected text to search
+-- while doing escaping if needed.
+vim.keymap.set("x", "/", function()
+  vim.cmd("normal! y")
+  local text = vim.fn.getreg('"')
+  local escaped = vim.fn.escape(text, '/\\.^$*[]')
+  vim.api.nvim_feedkeys("/" .. escaped, "n", false)
+end, { noremap = true, desc = "Search selected text"  })
+
+-- Center screen when searching or jumping.
+for _, key in ipairs({ "n", "N", "G", "gg" }) do
+  vim.keymap.set("n", key, key .. "zz")
+end
+
 -- Easier to type.
-map("", "gh", '^', { desc = "To the first non-blank character of the line" })
-map("", "gl", '$', { desc = "To the end of the line" })
+-- map("", "gh", '^', { desc = "To the first non-blank character of the line" })
+-- map("", "gl", '$', { desc = "To the end of the line" })
 
 -- Focus previous / next buffer
 map({"n", "i"}, "<M-Right>", "<cmd>bnext<CR>", { silent = true })
 map({"n", "i"}, "<M-Left>", "<cmd>bprevious<CR>", { silent = true })
+map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 
 -- Search word under cursor and change it. n to go next and . to repeat.
 vim.keymap.set("n", "c*", "g*Ncgn", { noremap = true })
-
--- Help pages: <CR> to open links in addition to C-]
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "help", "man" },
-  callback = function()
-    vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<C-]>", { silent = true })
-  end,
-})
 
 vim.keymap.set({'n', 'v'}, '<up>',    '<nop>')
 vim.keymap.set({'n', 'v'}, '<down>',  '<nop>')
@@ -76,8 +126,8 @@ vim.keymap.set({'n', 'v'}, '<left>',  '<nop>')
 vim.keymap.set({'n', 'v'}, '<right>', '<nop>')
 
 -- Avoid accidentally pressing these.
-map({ "x", "n" }, "<S-Down>", "j")
-map({ "x", "n" }, "<S-Up>", "k")
+map({ "x", "n" }, "<S-Down>",  "j")
+map({ "x", "n" }, "<S-Up>",    "k")
 map({ "x", "n" }, "<S-Right>", "l")
 map({ "x", "n" }, "<S-Left>", "h")
 
@@ -85,9 +135,45 @@ map({ "x", "n" }, "<S-Left>", "h")
 -- No VSCode compatible mappings after this
 --------------------------------------------------------------------------------
 
-if vim.g.vscode then
-  return
-end
+if vim.g.vscode then return end
+
+-- Normal mode: execute current line
+vim.keymap.set("n", "<leader>cx", function()
+  local line = vim.api.nvim_get_current_line()
+  local chunk, err = loadstring(line)
+  if not chunk then
+    vim.notify("Error: " .. err, vim.log.levels.ERROR)
+  else
+    chunk()
+  end
+end, { desc = "Execute current line as Lua" })
+
+-- Visual mode: execute selected lines
+vim.keymap.set("v", "<leader>cx", function()
+  local start_line = vim.fn.line("v")
+  local end_line = vim.fn.line(".")
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+  local chunk, err = loadstring(table.concat(lines, "\n"))
+  if not chunk then
+    vim.notify("Error: " .. err, vim.log.levels.ERROR)
+  else
+    chunk()
+  end
+end, { desc = "Execute selected Lua code" })
+
+map("n", "<leader>cX", "<cmd>source %<CR>", { desc = "Execute the current file" })
+
+-- Detach LSP from buffer
+vim.keymap.set("n", "<leader>cD", function()
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+    vim.lsp.buf_detach_client(0, client.id)
+  end
+  vim.notify("LSP detached from current buffer", vim.log.levels.INFO)
+end, { desc = "Detach LSP from buffer" })
+
 
 vim.api.nvim_set_keymap( "v", "<LocalLeader>W", ":!fmt -w 80<CR>",
   { desc = "Wrap text to 80 char", noremap = true, silent = true }
@@ -117,7 +203,7 @@ function Capture_keypress()
   -- Wait for the next key press
   local key = vim.fn.getchar()
 
-  -- Convert the key to a string representation
+  -- Convert the key to a strng representation
   local key_str = vim.fn.nr2char(key)
 
   -- Show what the key does
@@ -130,17 +216,24 @@ vim.api.nvim_set_keymap('n', '<leader>k', ':lua Capture_keypress()<CR>',
 
 -- Terminal ------------------------------------------------
 
+-- More terminal related bindings are defined in snacks.lua. These don't
+-- use snacks because it gives me cliches with Neovide.
 map("n", "<Leader>tb", "<CMD>terminal<CR>", { desc = "Open in new buffer" })
 
--- Not all terminals support this keybindings.
-map("t", "<C-`>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+-- map("n", "<Leader>ts", function() vim.cmd("25split | terminal")  end,
+--   { desc = "Open in split" })
 
--- Tap C-\ twice to exit terminal mode. Default C-\ C-n.
+map("n", "<Leader>tv", function() vim.cmd("vsplit | terminal")  end,
+  { desc = "◨ Open in vertical split" })
+
+-- Tap C-\ twice to exit terminal mode to normal mode. Default C-\ C-n.
+-- I don't use common <esc><esc> because <esc> is interpreted by shell's
+-- vi input mode.
 map('t', [[<C-\><C-\>]], [[<C-\><C-n>]], { silent = true })
+map('t', [[<C-q>]], [[<C-\><C-n>]], { silent = true })
 
-vim.keymap.set("n", "<leader>tv", function()
-  vim.cmd("vsplit | terminal")
-end, { desc = "◨ Open in vertical split" })
+-- Not all terminals support this keypress.
+-- map("t", "<C-`>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 
 -- GUI --------------------------------------------------
 
