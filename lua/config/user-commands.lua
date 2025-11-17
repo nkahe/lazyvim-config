@@ -50,12 +50,14 @@ vim.api.nvim_create_user_command('Cppath', function(opts)
     vim.fn.setreg('+', target)  -- copy to system clipboard
     print('Copied to clipboard: ' .. target)
   else
-    vim.api.nvim_err_writeln('Path does not exist: ' .. target)
+    vim.notify('Path does not exist: ' .. target, vim.log.levels.ERROR )
   end
 end, {
   nargs = '?',       -- optional argument
   complete = 'file', -- tab-completion for files
 })
+
+vim.keymap.set("n", "<leader>fP", ":Cppath %<CR>", { desc = "Copy file's path" })
 
 -- Change cwd to match current buffer's directory
 create_cmd('Cdb', function()
