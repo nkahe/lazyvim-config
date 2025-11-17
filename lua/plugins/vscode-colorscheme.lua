@@ -4,19 +4,15 @@
 
 return {
   "Mofiqul/vscode.nvim",
+  enabled = true,
   lazy = false, -- make sure we load this during startup if it is your main colorscheme
   priority = 1000, -- make sure to load this before all the other start plugins
   opts = {
       color_overrides = {
-
-        -- Normal & signcolumn bg
-        -- vscBack = '#1b1b1b',
-
-        -- Cursorline, vertical ColorColumn
-        -- vscCursorDarkDark = "#1f1f1f",
-
-        -- Floating windowws, terminals etc.
-        -- vscPopupBack = '#262626',
+        -- Make backgrounds slightly darker.
+        vscBack = '#1f1f1f',            -- Normal & signcolumn bg
+        vscCursorDarkDark = '#222222',  -- Cursorline, vertical ColorColumn
+        -- vscPopupBack = '#1f1f1f',    -- Floating windowws, terminals etc.
       },
 
     group_overrides = {
@@ -31,14 +27,15 @@ return {
 
       -- By default Snacks Explorer tree and directory names are too dark.
       -- Make them same as other background.
-      SnacksPickerTree = { bg = '#252525', },
-      SnacksPickerDirectory = { bg ='#252525' },
+      SnacksPickerTree = { fg = '#404040', bg = 'NONE', },
+      SnacksPickerDirectory = { bg ='NONE' },
       SnacksPickerCol = { bg ='#252525' },
+      SnacksPickerGitStatusUntracked = { fg = "#8b8b8b", bg = "NONE" },
+      SnacksPickerPathHidden = { fg = "#8b8b8b", bg = "NONE" },
 
       -- Make input box less striking.
       SnacksPickerInputBorder = { fg = "#595959", bg = "NONE" },
       SnacksPickerInputTitle = { fg = "#919191", bg = "NONE" },
-      SnacksPickerGitStatusUntracked = { fg = "#8b8b8b", bg = "NONE" },
 
       SnacksNotifierMinimal = { bg = "#1b1b1b" },
 
@@ -46,7 +43,6 @@ return {
       NoiceCmdlinePopup = { bg = "#262626" },
       NoiceCmdlinePopupBorder = { fg = "#7f7f7f" },
       NoiceCmdlinePopupBorderSearch = { fg = "#b5b5b5" },
-
       NoiceCmdlinePrompt = { fg = "#ffffff" },
       NoiceCursor = { fg = "#ffffff" },
 
@@ -55,7 +51,7 @@ return {
       TermCursorLine = { bg = "none" }
     }
 
-    },
+  },
   config = function(_, opts)
     -- Documentation suggest calling it. Usings only opts gave difficulties
     -- on appling theme.
