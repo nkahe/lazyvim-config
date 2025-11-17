@@ -1,1 +1,1 @@
-../../../nvim-custom/lua/config/autocmds.lua
+/home/henri/.config/nvim/custom/lua/config/autocmds.lua
