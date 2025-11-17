@@ -1,5 +1,5 @@
 
--- This file is sourced if run in embedded VSCode instance.
+-- This file is sourced only if run in embedded VSCode instance.
 
 -- vim.keymap.set({ 'n', 'x' }, '<Space>', function()
 --     vim.fn.VSCodeNotify('whichkey.show')
