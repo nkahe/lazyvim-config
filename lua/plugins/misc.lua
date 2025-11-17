@@ -28,6 +28,20 @@ return {
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
   },
 
+  "chrisgrieser/nvim-rip-substitute",
+    cmd = "RipSubstitute",
+    keys = {
+      {
+        "<leader>fs",
+        function() require("rip-substitute").sub() end,
+        mode = { "n", "x" },
+        desc = " rip substitute",
+      },
+    },
+  opts = {
+    regexOptions = { startWithFixedStringsOn = true }
+  },
+
   -- lambdalisue/vim-suda: 🥪 An alternative sudo.vim for Vim and Neovim,
   -- limited support sudo in Windows - https://github.com/lambdalisue/vim-suda
   {
