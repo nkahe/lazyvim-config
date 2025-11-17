@@ -1,4 +1,5 @@
 return {
+  {
   "neovim/nvim-lspconfig",
   opts =  {
     diagnostics = {
@@ -37,8 +38,15 @@ return {
     },
   },
   },
+},
+
+  {
+    "mason-org/mason.nvim",
+    opts = {
+      install_root_dir = vim.fn.expand("~/.local/share/nvim/mason"),
+    },
+  }
+
 }
-
-
 
 
