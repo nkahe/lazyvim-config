@@ -15,7 +15,7 @@ local map = vim.keymap.set
 -- map({'n', 'v'}, "Ð", '"_D', { desc = "Delete to end of line without yanking" })
 map({'n', 'v'}, "<leader>d", '"_d', { desc = "Delete without yanking"})
 map({'n', 'v'}, "<leader>D", '"_D', { desc = "Delete to end of line without yanking" })
--- map("x", "<Leader>p", '"_dP', { desc = "Paste" })
+-- map("x", "<Leader>p", '"_dP', { desc = "Paste" }
 
 -- Make commands that delete single characters not to yank to registers.
 map({'n', 'v'}, "<Del>", '"_x', { desc = "which_key_ignore" })

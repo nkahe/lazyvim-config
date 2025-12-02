@@ -9,4 +9,5 @@ _G.Config.windowtitle = 'Lazyvim'
 vim.opt.guifont = { "FiraCode Nerd Font", ":h10" }
 require("config.lazy")
 
+-- Other custom config are sourced lazily from this file.
 require("config.autocmds-lazyvim")
