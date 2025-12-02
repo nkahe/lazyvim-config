@@ -3,6 +3,13 @@
 
 local create_cmd = vim.api.nvim_create_user_command
 
+create_cmd( 'Title', function(opts)
+    _G.Config = _G.Config or {}
+    _G.Config.windowtitle = opts.args
+  end,
+  { nargs = 1 } -- Requires exactly one argument
+)
+
 -- Clear oldfiles eg. recent files.
 vim.api.nvim_create_user_command("ClearRecent", function()
   vim.cmd([[
@@ -34,7 +41,7 @@ vim.api.nvim_create_user_command("TrimRecent", function()
 end, {})
 
 -- Copy path of gives file/dir to clipboard.
-vim.api.nvim_create_user_command('Cppath', function(opts)
+create_cmd('Cppath', function(opts)
   local target = opts.args
 
   if target == '' then  -- If no argument given, use current working directory
@@ -149,4 +156,7 @@ end, { desc = "Reload settings" })
 vim.keymap.set("ca", "W", "w")
 vim.keymap.set("ca", "Wq", "wq")
 vim.keymap.set("ca", "WQ", "wq")
+vim.keymap.set("ca", "Qa", "qa")
+vim.keymap.set("ca", "QA", "qa")
+vim.keymap.set("ca", "X", "x")
 
