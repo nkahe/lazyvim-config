@@ -12,11 +12,6 @@ g.autoformat = false
 
 -- g.maplocalleader = '\'
 
--- Use Linux primary, selection clipboard by default. Problem with LazyVim's
--- default "unnamedplus", is that it pollutes the main clipboard history with
--- unnecessary clutter.
-opt.clipboard = "unnamed"
-
 -- comma-separated list of screen columns that are highlighted with
 -- ColorColumn hl-ColorColumn. Useful to align text.
 opt.colorcolumn = "80"
@@ -36,7 +31,7 @@ opt.guifont = { "FiraCode Nerd Font", ":h12" }
 opt.selectmode = "key"
 
 -- Minimal number of screen lines to keep above and below the cursor.
-opt.scrolloff = 7
+opt.scrolloff = 8
 
 -- Spellcheck
 opt.spell = false

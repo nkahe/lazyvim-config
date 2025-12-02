@@ -16,53 +16,46 @@ end
 -- Deleting without yanking
 
 -- AltGr + d in nordic layout
-map({'n', 'v'}, "ð", '"_d', { desc = "Delete without yanking" })
-map({'n', 'v'}, "Ð", '"_d', { desc = "Delete to end of line without yanking" })
+-- map({'n', 'v'}, "ð", '"_d', { desc = "Delete without yanking" })
+-- map({'n', 'v'}, "Ð", '"_D', { desc = "Delete to end of line without yanking" })
+map({'n', 'v'}, "<leader>d", '"_d', { desc = "Delete without yanking"})
+map({'n', 'v'}, "<leader>D", '"_D', { desc = "Delete to end of line without yanking" })
 -- map("x", "<Leader>p", '"_dP', { desc = "Paste" })
 
+-- Make commands that delete single characters not to yank to registers.
 map({'n', 'v'}, "<Del>", '"_x', { desc = "which_key_ignore" })
-map({'n', 'v'}, "<BS>", '"_X', { desc = "which_key_ignore" })
-map({'n', 'v'}, "x", '"_x', { desc = "which_key_ignore" })
-map({'n', 'v'}, "X", '"_X', { desc = "which_key_ignore" })
+map({'n', 'v'}, "<BS>", '"_X',  { desc = "which_key_ignore" })
+map({'n', 'v'}, "x", '"_x', { desc = "Delete characters" })
+map({'n', 'v'}, "X", '"_X', { desc = "Delete characters before cursor" })
+map({'n', 'v'}, "s", '"_s', { desc = "Substitute characters" })
+map({'n', 'v'}, "S", '"_S', { desc = "Substitute characters before cursor" })
 
 -- Clipboard operators
-map({'n', 'v'}, "cp", '"+p', { desc = "Paste from clipboard" })
-map({'n', 'v'}, "gp", '"+p', { desc = "Paste from clipboard" })
-map({'n', 'v'}, "cP", '"+P', { desc = "Paste from clipboard" })
-map({'n', 'v'}, "gP", '"+P', { desc = "Paste from clipboard" })
+-- map({'n', 'v'}, "cp", '"+p', { desc = "Paste from clipboard" })
+-- map({'n', 'v'}, "gp", '"+p', { desc = "Paste from clipboard" })
+-- map({'n', 'v'}, "cP", '"+P', { desc = "Paste from clipboard" })
+-- map({'n', 'v'}, "gP", '"+P', { desc = "Paste from clipboard" })
 
-map({'n', 'v'}, "cd", '"+d', { desc = "Delete to clipboard" })
-map({'n', 'v'}, "cD", '"+D', { desc = "Delete end of line to clipboard" })
-map({'n', 'v'}, "cy", '"+y', { desc = "Yank to clipboard" })
-map({'n', 'v'}, "gy", '"+y', { desc = "Yank to clipboard" })
-map({'x'}, "<C-c>", '"+y', { desc = "Yank to clipboard" })
--- Mapping cY doesn't work.
-map({'n'}, 'gY', '"+y$', { desc = "Yank end of line to clipboard" , noremap = false})
+-- map({'n', 'v'}, "cd", '"+d', { desc = "Delete to clipboard" })
+-- map({'n', 'v'}, "cD", '"+D', { desc = "Delete end of line to clipboard" })
+-- map({'n', 'v'}, "cy", '"+y', { desc = "Yank to clipboard" })
+-- map({'n', 'v'}, "gy", '"+y', { desc = "Yank to clipboard" })
+-- map({'x'}, "<C-c>", '"+y',   { desc = "Yank to clipboard" })
+-- -- Mapping cY doesn't work.
+-- map({'n'}, 'gY', '"+y$', { desc = "Yank end of line to clipboard" , noremap = false})
 
--- GUI style insert mappings
-map({'n', 'v'}, '<S-Insert>', '"*P', { desc = "Paste selection" })
-map('i', '<S-Insert>', '<C-o>"*P')
+-- GUI style copy/paste.
 map('i', '<C-v>', '<C-o>"+P')
 map('x', '<C-c>', '"+y')
+-- Paste from primary (select) clipboard.
+map({'n', 'v'}, '<S-Insert>', '"*P', { desc = "Paste selection" })
 map('t', '<S-Insert>', '<C-\\><C-n>"*Pi')
+map('i', '<S-Insert>', '<C-o>"*P')
 map('c', '<S-Insert>', '<C-R>*')
 
--- Paste below cursorline and reindent text properly.
-vim.keymap.set("n", "]p", function()
-  local before = vim.fn.getpos(".")
-  vim.cmd("normal! ]p")
-  local after = vim.fn.getpos(".")
-  vim.cmd(string.format("normal! %dG=`]`", before[2]))
-end, { noremap = true, desc = "Paste below and reindent" })
-
--- Paste above cursorline and reindent text properly.
-vim.keymap.set("n", "[p", function()
-  local before = vim.fn.getpos(".")
-  vim.cmd("normal! [p")  -- paste above
-  local after = vim.fn.getpos(".")
-  -- reindent pasted text
-  vim.cmd(string.format("normal! %dG=`[", before[2]))
-end, { noremap = true, desc = "Paste above and reindent"  })
+-- Paste linewise before/after current line
+map('n', '[p', '<Cmd>exe "put! " . v:register<CR>', { desc = 'Paste Above' })
+map('n', ']p', '<Cmd>exe "put "  . v:register<CR>', { desc = 'Paste Below' })
 
 -- Copy file name to clipboard
 vim.keymap.set("n", "<leader>fN", function()
