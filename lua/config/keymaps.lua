@@ -1,13 +1,8 @@
 
--- These keymaps are shared between my different Neovim configurations.
+-- These keymaps are shared between Neovim configurations. keymaps.lua in
+-- Lazyvim setup.
 
 local map = vim.keymap.set
-
--- Mappings that are *only* used when run embedded in VSCode. Mappings below
--- should be also vscode compatible. Non-compatible mappings are at the end of file.
-if vim.g.vscode then
-  require("config.vscode")
-end
 
 -- NOTE: For mappings "{ noremap = true }" is the default so no need to add that.
 
@@ -95,11 +90,6 @@ vim.keymap.set("x", "/", function()
   vim.api.nvim_feedkeys("/" .. escaped, "n", false)
 end, { noremap = true, desc = "Search selected text"  })
 
--- Center screen when searching or jumping.
-for _, key in ipairs({ "n", "N", "G", "gg" }) do
-  vim.keymap.set("n", key, key .. "zz")
-end
-
 -- Easier to type.
 -- map("", "gh", '^', { desc = "To the first non-blank character of the line" })
 -- map("", "gl", '$', { desc = "To the end of the line" })
@@ -113,10 +103,10 @@ map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 -- Search word under cursor and change it. n to go next and . to repeat.
 vim.keymap.set("n", "c*", "g*Ncgn", { noremap = true })
 
-vim.keymap.set({'n', 'v'}, '<up>',    '<nop>')
-vim.keymap.set({'n', 'v'}, '<down>',  '<nop>')
-vim.keymap.set({'n', 'v'}, '<left>',  '<nop>')
-vim.keymap.set({'n', 'v'}, '<right>', '<nop>')
+-- vim.keymap.set({'n', 'v'}, '<up>',    '<nop>')
+-- vim.keymap.set({'n', 'v'}, '<down>',  '<nop>')
+-- vim.keymap.set({'n', 'v'}, '<left>',  '<nop>')
+-- vim.keymap.set({'n', 'v'}, '<right>', '<nop>')
 
 -- Avoid accidentally pressing these.
 map({ "x", "n" }, "<S-Down>",  "j")
@@ -129,6 +119,11 @@ map({ "x", "n" }, "<S-Left>", "h")
 --------------------------------------------------------------------------------
 
 if vim.g.vscode then return end
+
+-- Center screen when searching or jumping.
+for _, key in ipairs({ "n", "N", "G", "gg" }) do
+  vim.keymap.set("n", key, key .. "zz")
+end
 
 -- Normal mode: execute current line
 vim.keymap.set("n", "<leader>cx", function()
