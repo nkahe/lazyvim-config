@@ -20,7 +20,11 @@ require("lazy").setup({
     { -- add LazyVim and import its plugins.
       "LazyVim/LazyVim", import = "lazyvim.plugins",
       -- Set default colorscheme.
-      opts = { colorscheme = "vscode" }
+     opts = {
+        colorscheme = function()
+          require("base46").load_all_highlights()
+        end
+      }
     },
     -- import/override with your plugins
     { import = "plugins" },
@@ -35,7 +39,7 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   -- Ensure colorscheme is installed.
-  install = { colorscheme = { "vscode" } },
+  -- install = { colorscheme = { "vscode" } },
   -- install = { colorscheme = { "tokyonight.nvim" } },
   checker = {
     enabled = true, -- check for plugin updates periodically

@@ -1,5 +1,14 @@
 
 return {
+  {
+    "nvchad/base46",
+    enabled = true,
+    lazy = false,
+    priority = 1000,
+    build = function()
+      require("base46").load_all_highlights()
+    end,
+  },
   -- EinfachToll/DidYouMean: Vim plugin which asks for the right file to open
   -- https://github.com/EinfachToll/DidYouMean
   {
