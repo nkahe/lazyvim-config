@@ -122,11 +122,13 @@ if vim.g.vscode then return end
 
 -- Center screen when searching or jumping.
 for _, key in ipairs({ "n", "N", "G", "gg" }) do
-  vim.keymap.set("n", key, key .. "zz")
+  map("n", key, function()
+    vim.cmd("normal! " .. key .. "zz")
+  end)
 end
 
 -- Normal mode: execute current line
-vim.keymap.set("n", "<leader>cx", function()
+map("n", "<leader>cx", function()
   local line = vim.api.nvim_get_current_line()
   local chunk, err = loadstring(line)
   if not chunk then
@@ -137,7 +139,7 @@ vim.keymap.set("n", "<leader>cx", function()
 end, { desc = "Execute current line as Lua" })
 
 -- Visual mode: execute selected lines
-vim.keymap.set("v", "<leader>cx", function()
+map("v", "<leader>cx", function()
   local start_line = vim.fn.line("v")
   local end_line = vim.fn.line(".")
   if start_line > end_line then
@@ -155,15 +157,16 @@ end, { desc = "Execute selected Lua code" })
 map("n", "<leader>cX", "<cmd>source %<CR>", { desc = "Execute the current file" })
 
 -- Detach LSP from buffer
-vim.keymap.set("n", "<leader>cD", function()
+map("n", "<leader>cD", function()
   for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
     vim.lsp.buf_detach_client(0, client.id)
   end
   vim.notify("LSP detached from current buffer", vim.log.levels.INFO)
 end, { desc = "Detach LSP from buffer" })
 
+map( "n", "<leader>fd", "<cmd>diffthis<CR>", { desc = "Diff this file" })
 
-vim.api.nvim_set_keymap( "v", "<LocalLeader>W", ":!fmt -w 80<CR>",
+map( "v", "<LocalLeader>W", "<md>!fmt -w 80<CR>",
   { desc = "Wrap text to 80 char", noremap = true, silent = true }
 )
 
@@ -174,8 +177,8 @@ map("n", "<A-Down>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move D
 map("n", "<A-Up>",   "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
 map("i", "<A-Down>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
 map("i", "<A-Up>",   "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
-vim.keymap.set("v", "<A-Down>", ":m '>+1<cr>gv=gv", { silent = true, desc = "Move down" })
-vim.keymap.set("v", "<A-Up>", ":m '<-2<cr>gv=gv", { silent = true, desc = "Move up" })
+map("v", "<A-Down>", "<cmd>m '>+1<cr>gv=gv", { silent = true, desc = "Move down" })
+map("v", "<A-Up>",   "<cmd>m '<-2<cr>gv=gv", { silent = true, desc = "Move up" })
 
 map("n", "<M-l>", "<cmd>bnext<CR>", { silent = true })
 map("n", "<M-h>", "<cmd>bprevious<CR>", { silent = true })
@@ -199,7 +202,7 @@ function Capture_keypress()
 end
 
 -- Create a key mapping tuhat calls the function
-vim.api.nvim_set_keymap('n', '<leader>k', ':lua Capture_keypress()<CR>',
+map('n', '<leader>k', ':lua Capture_keypress()<CR>',
   { desc = "Show mapping of key", noremap = true, silent = true })
 
 -- Terminal ------------------------------------------------
@@ -233,7 +236,7 @@ if vim.g.neovide then
   map({'n', 'v'}, '<C-S-v>', '"+P', { desc = "Paste from clipboard" })
   map('i', '<C-S-v>', '<C-o>"+P')
   map('t', '<C-S-v>', '<C-\\><C-n>"+Pi')
-  vim.keymap.set('c', '<C-S-v>', '<C-R>+')
+  map('c', '<C-S-v>', '<C-R>+')
 
   -- Copy
   map('v', '<C-S-c>', '"+y')
