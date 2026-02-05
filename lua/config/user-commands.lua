@@ -3,9 +3,11 @@
 
 local create_cmd = vim.api.nvim_create_user_command
 
+-- Set prefix used in autocmd with sets window titles.
 create_cmd( 'Title', function(opts)
     _G.Config = _G.Config or {}
     _G.Config.windowtitle = opts.args
+  vim.cmd("doautocmd BufEnter") -- Trigger autocmd that sets title.
   end,
   { nargs = 1 } -- Requires exactly one argument
 )
