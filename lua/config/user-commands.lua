@@ -114,6 +114,21 @@ vim.api.nvim_create_user_command('RecoverDiff', function()
 end, {})
 
 
+local function smart_vdiff(file)
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if vim.wo[win].diff then
+      vim.api.nvim_set_current_win(win)
+      vim.cmd("edit " .. vim.fn.fnameescape(file))
+      return
+    end
+  end
+  vim.cmd("vert diffsplit " .. vim.fn.fnameescape(file))
+end
+
+vim.api.nvim_create_user_command("Diff", function(opts)
+  smart_vdiff(opts.args)
+end, { nargs = 1, complete = "file" })
+
 -- Trim trailing whitespace from the buffer
 create_cmd('Trim', function()
   local save_cursor = vim.fn.getpos(".")
