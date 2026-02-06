@@ -217,6 +217,9 @@ map("n", "<Leader>tb", "<CMD>terminal<CR>", { desc = "Open in new buffer" })
 map("n", "<Leader>tv", function() vim.cmd("vsplit | terminal")  end,
   { desc = "◨ Open in vertical split" })
 
+map("n", "<Leader>ts", function() vim.cmd("split | terminal")  end,
+  { desc = "◨ Open in horizontal split" })
+
 -- Tap C-\ twice to exit terminal mode to normal mode. Default C-\ C-n.
 -- I don't use common <esc><esc> because <esc> is interpreted by shell's
 -- vi input mode.
