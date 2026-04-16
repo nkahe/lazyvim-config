@@ -113,14 +113,6 @@ for _, key in ipairs({ "n", "N", "G", "gg" }) do
   end)
 end
 
--- Detach LSP from buffer
-map("n", "<leader>cD", function()
-  for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-    vim.lsp.buf_detach_client(0, client.id)
-  end
-  vim.notify("LSP detached from current buffer", vim.log.levels.INFO)
-end, { desc = "Detach LSP from buffer" })
-
 map( "n", "<leader>fd", "<cmd>diffthis<CR>", { desc = "Diff this file" })
 
 map( "v", "<LocalLeader>W", "<md>!fmt -w 80<CR>",
@@ -140,27 +132,14 @@ map("v", "<A-Up>",   "<cmd>m '<-2<cr>gv=gv", { silent = true, desc = "Move up" }
 map("n", "<M-l>", "<cmd>bnext<CR>", { silent = true })
 map("n", "<M-h>", "<cmd>bprevious<CR>", { silent = true })
 
+
+-- Expand to parent / child. Same shortcut as in Kakoune and Helix.
+map({ 'x', 'o' }, '<M-o>', 'an', { remap = true })
+map({ 'x', 'o' }, '<M-i>', 'in', { remap = true })
+
 -- Add common shortcuts from GUI apps.
 map("i", '<C-BS>', '<C-w>', { silent = true })
 map("i", '<C-Del>', '<C-o>dw', { silent = true })
-
--- Function to capture keypress and show its mapping.
--- Note: Many Neovim defaults keys are not mappings.
--- TODO: Work with multi-press keymaps and not only single keys.
-function Capture_keypress()
-  -- Wait for the next key press
-  local key = vim.fn.getchar()
-
-  -- Convert the key to a strng representation
-  local key_str = vim.fn.nr2char(key)
-
-  -- Show what the key does
-  vim.cmd('verbose map ' .. key_str)
-end
-
--- Create a key mapping tuhat calls the function
-map('n', '<leader>k', ':lua Capture_keypress()<CR>',
-  { desc = "Show mapping of key", noremap = true, silent = true })
 
 -- Terminal ------------------------------------------------
 
