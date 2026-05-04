@@ -1,1 +1,1 @@
-/home/henri/.config/nvim/custom/lua/plugins/noice.lua
+../../../custom/lua/plugins/noice.lua
