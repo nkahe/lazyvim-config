@@ -21,9 +21,10 @@ require("lazy").setup({
       "LazyVim/LazyVim", import = "lazyvim.plugins",
       -- Set default colorscheme.
      opts = {
-        colorscheme = function()
-          require("base46").load_all_highlights()
-        end
+        colorscheme = "tokyonight-storm"
+        -- colorscheme = function()
+        --   require("base46").load_all_highlights()
+        -- end
       }
     },
     -- import/override with your plugins

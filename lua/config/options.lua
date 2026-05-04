@@ -50,7 +50,14 @@ opt.virtualedit:append("block,onemore")
 
 -- vim.api.nvim_set_hl(0, 'NeoTreeGitUntracked', { fg = '#73c991' })
 
+vim.diagnostic.enable(false)
+
+vim.g.copilot_enabled = false
+vim.lsp.enable("copilot", false)
+
 -- GUI ------------------------------------------
+
+-- vim.diagnostic.enable(false)
 
 if g.neovide then
   -- Make Neovide animations a lot faster and less distracting.
