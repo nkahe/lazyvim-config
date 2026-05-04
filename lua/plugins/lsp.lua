@@ -28,6 +28,10 @@ return {
 
     -- map({'n'}, "<Leader>ct", function() Snacks.picker.lsp_type_definitions() end, { desc =  "Goto T[y]pe Definition" })
   servers = {
+        copilot = {
+          enabled = false
+        },
+
     ["*"] = {
       keys = {
         -- Disable. Used for copy to clipboard.
