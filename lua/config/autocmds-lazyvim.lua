@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd("User", {
   group = augroup("source_custom_configs"),
   callback = function()
     require("config.keymaps-lazyvim")
-    require("config.user-commands")
+    require("config.commands")
 
     if vim.g.vscode then
       require("config.vscode")
